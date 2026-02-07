@@ -4,11 +4,31 @@ import { Check, Copy } from "lucide-react";
 export const CopyablePrompt = ({ prompt }) => {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(prompt).then(() => {
+  const handleCopy = useCallback(async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(prompt);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } else {
+        // Fallback for older browsers or when clipboard API is not available
+        const textArea = document.createElement('textarea');
+        textArea.value = prompt;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch (error) {
+      console.warn('Copy failed:', error);
+      // Still show feedback even if copy failed
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    });
+    }
   }, [prompt]);
 
   return (
