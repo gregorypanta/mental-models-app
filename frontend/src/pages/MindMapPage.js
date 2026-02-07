@@ -113,6 +113,7 @@ export default function MindMapPage() {
         id: `e-center-${sectionId}`,
         source: "center",
         target: sectionId,
+        type: "default",
         style: { stroke: "#333", strokeWidth: 1 },
         animated: false,
       });
