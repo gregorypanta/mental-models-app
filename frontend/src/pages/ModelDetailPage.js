@@ -56,38 +56,38 @@ export default function ModelDetailPage() {
           <Link
             to={`/domain/${sectionSlug}`}
             data-testid="back-to-domain"
-            className="inline-flex items-center gap-2 text-white/40 text-sm mb-12 hover:text-white/60 transition-colors duration-200"
+            className="inline-flex items-center gap-2 text-[#A1A1AA] text-sm mb-12 hover:text-white transition-colors duration-200"
           >
             <ArrowLeft size={14} />
             {model.section_name}
           </Link>
 
-          <div className="mb-4 flex items-center gap-3">
-            <span className="text-white/20 font-mono text-xs">
+          <div className="mb-4">
+            <span className="blue-badge">
               {String(model.section_index).padStart(2, '0')}.{String(model.model_index).padStart(2, '0')}
             </span>
           </div>
 
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl tracking-tight text-white mb-16 leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl tracking-tighter font-bold gradient-text mb-16 leading-tight">
             {model.title}
           </h1>
 
           {/* Explanation */}
           <div className="mb-16">
-            <p className="text-white/25 font-mono text-xs uppercase tracking-[0.2em] mb-4">
+            <p className="text-[#2563EB] font-mono text-xs uppercase tracking-[0.2em] mb-4">
               Explanation
             </p>
-            <p className="text-white/70 text-base md:text-lg leading-relaxed">
+            <p className="text-[#A1A1AA] text-lg leading-relaxed">
               {model.explanation}
             </p>
           </div>
 
           {/* Example */}
           <div className="mb-16">
-            <p className="text-white/25 font-mono text-xs uppercase tracking-[0.2em] mb-4">
+            <p className="text-[#2563EB] font-mono text-xs uppercase tracking-[0.2em] mb-4">
               Example
             </p>
-            <div className="glass-card rounded-2xl p-6 md:p-8">
+            <div className="bg-[#0F0F0F] border border-white/5 rounded-2xl p-6 md:p-8">
               <p className="text-white/50 text-base leading-relaxed italic">
                 {model.example}
               </p>
@@ -96,19 +96,19 @@ export default function ModelDetailPage() {
 
           {/* AI Prompt */}
           <div className="mb-20">
-            <p className="text-white/25 font-mono text-xs uppercase tracking-[0.2em] mb-4">
+            <p className="text-[#2563EB] font-mono text-xs uppercase tracking-[0.2em] mb-4">
               AI Prompt
             </p>
             <CopyablePrompt prompt={model.ai_prompt} />
           </div>
 
           {/* Reflection CTA */}
-          <div className="glass-card rounded-2xl p-6 md:p-8 mb-20">
-            <p className="text-white/40 text-sm mb-3">Reflect on this model</p>
+          <div className="bg-[#0F0F0F] border border-white/5 rounded-2xl p-6 md:p-8 mb-20">
+            <p className="text-[#A1A1AA] text-sm mb-3">Reflect on this model</p>
             <Link
               to={`/journal?model=${encodeURIComponent(model.title)}&section=${sectionSlug}`}
               data-testid="reflect-btn"
-              className="inline-flex items-center justify-center rounded-full border border-white/20 bg-transparent px-6 py-2.5 text-sm font-medium text-white hover:bg-white/10 transition-colors duration-200 gap-2"
+              className="rounded-full px-6 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-sm font-bold hover:scale-105 transition-transform duration-200 inline-flex items-center"
             >
               Open Journal
             </Link>
@@ -120,7 +120,7 @@ export default function ModelDetailPage() {
               <Link
                 to={`/model/${sectionSlug}/${prevModel.model_index}`}
                 data-testid="prev-model"
-                className="flex items-center gap-2 text-white/40 text-sm hover:text-white/60 transition-colors duration-200"
+                className="flex items-center gap-2 text-[#A1A1AA] text-sm hover:text-white transition-colors duration-200"
               >
                 <ArrowLeft size={14} />
                 <span className="max-w-[200px] truncate">{prevModel.title}</span>
@@ -130,7 +130,7 @@ export default function ModelDetailPage() {
               <Link
                 to={`/model/${sectionSlug}/${nextModel.model_index}`}
                 data-testid="next-model"
-                className="flex items-center gap-2 text-white/40 text-sm hover:text-white/60 transition-colors duration-200"
+                className="flex items-center gap-2 text-[#A1A1AA] text-sm hover:text-white transition-colors duration-200"
               >
                 <span className="max-w-[200px] truncate">{nextModel.title}</span>
                 <ArrowRight size={14} />
