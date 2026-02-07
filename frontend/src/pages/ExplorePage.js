@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Brain, Target, Lightbulb, Compass, BookOpen, Cpu, ArrowRight } from "lucide-react";
+import { useProgress } from "@/context/ProgressContext";
 import axios from "axios";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -17,9 +18,17 @@ const sectionIcons = {
 
 export default function ExplorePage() {
   const [sections, setSections] = useState([]);
+  const [allModels, setAllModels] = useState([]);
+  const { getReadCountForSection, totalRead } = useProgress();
 
   useEffect(() => {
-    axios.get(`${API}/sections`).then((r) => setSections(r.data)).catch(console.error);
+    Promise.all([
+      axios.get(`${API}/sections`),
+      axios.get(`${API}/models?limit=300`),
+    ]).then(([secRes, modRes]) => {
+      setSections(secRes.data);
+      setAllModels(modRes.data);
+    }).catch(console.error);
   }, []);
 
   return (
@@ -34,14 +43,21 @@ export default function ExplorePage() {
           <h1 className="text-4xl md:text-6xl tracking-tighter font-bold gradient-text mb-4">
             Thinking Spaces
           </h1>
-          <p className="text-[#A1A1AA] text-lg max-w-xl mb-16 leading-relaxed">
-            Choose a domain to begin. Each space contains a curated set of mental models designed for a specific dimension of thinking.
-          </p>
+          <div className="flex items-center gap-4 mb-16">
+            <p className="text-[#A1A1AA] text-lg max-w-xl leading-relaxed">
+              Choose a domain to begin.
+            </p>
+            {totalRead > 0 && (
+              <span className="blue-badge">{totalRead} / {allModels.length} read</span>
+            )}
+          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {sections.map((section, i) => {
             const Icon = sectionIcons[section.icon] || Brain;
+            const readCount = getReadCountForSection(section.slug, allModels);
+            const progressPercent = section.model_count > 0 ? Math.round((readCount / section.model_count) * 100) : 0;
             return (
               <motion.div
                 key={section.slug}
@@ -61,7 +77,22 @@ export default function ExplorePage() {
                     <span className="blue-badge">{section.model_count} Models</span>
                   </div>
                   <h2 className="text-2xl font-bold text-white mb-3">{section.short_name}</h2>
-                  <p className="text-[#A1A1AA] text-sm leading-relaxed mb-8">{section.description}</p>
+                  <p className="text-[#A1A1AA] text-sm leading-relaxed mb-6">{section.description}</p>
+
+                  {/* Progress bar */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <span className="text-[#A1A1AA] font-mono">{readCount}/{section.model_count} read</span>
+                      <span className="text-[#2563EB] font-mono">{progressPercent}%</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-[#2563EB] rounded-full transition-all duration-500"
+                        style={{ width: `${progressPercent}%` }}
+                      />
+                    </div>
+                  </div>
+
                   <div className="flex items-center justify-between">
                     <span className="text-[#2563EB] text-xs font-mono">Section {String(section.index).padStart(2, '0')}</span>
                     <ArrowRight size={16} className="text-white/30 group-hover:text-[#2563EB] group-hover:translate-x-1 transition-transform duration-200" />
