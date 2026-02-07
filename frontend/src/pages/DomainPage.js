@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronDown, ChevronUp, Bookmark, CheckCircle2 } from "lucide-react";
 import axios from "axios";
 import CopyablePrompt from "@/components/CopyablePrompt";
+import { useProgress } from "@/context/ProgressContext";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
