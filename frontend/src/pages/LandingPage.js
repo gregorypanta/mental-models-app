@@ -219,6 +219,87 @@ export default function LandingPage() {
         </section>
       )}
 
+      {/* Daily Model */}
+      {dailyModel && (
+        <section className="py-24 md:py-32 bg-[#0F0F0F]">
+          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <Sparkles size={16} className="text-[#2563EB]" />
+                <p className="text-xs uppercase tracking-[0.2em] text-[#2563EB] font-mono">Model of the Day</p>
+              </div>
+              <div className="bg-[#0A0A0A] border border-white/5 rounded-2xl p-8 md:p-10 hover:border-[#2563EB]/30 transition-colors duration-300">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="blue-badge">{dailyModel.section_name}</span>
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">{dailyModel.title}</h3>
+                <p className="text-[#A1A1AA] leading-relaxed mb-6 max-w-2xl">{dailyModel.explanation}</p>
+                <div className="bg-[#2563EB]/5 border border-[#2563EB]/15 rounded-xl p-4 mb-6">
+                  <div className="flex items-start justify-between gap-4">
+                    <p className="font-mono text-sm text-[#A1A1AA]">{dailyModel.ai_prompt}</p>
+                    <button onClick={copyPrompt} className="flex-shrink-0 p-2 rounded-lg bg-[#2563EB]/10 border border-[#2563EB]/20 hover:bg-[#2563EB]/20 transition-colors duration-200">
+                      {copied ? <Check size={14} className="text-[#10B981]" /> : <Copy size={14} className="text-[#2563EB]" />}
+                    </button>
+                  </div>
+                </div>
+                <Link
+                  to={`/model/${dailyModel.section_slug}/${dailyModel.model_index}`}
+                  data-testid="daily-model-link"
+                  className="rounded-full px-6 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-sm font-bold hover:scale-105 transition-transform duration-200 inline-flex items-center gap-2"
+                >
+                  Explore This Model <ArrowRight size={14} />
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* 30-Day Challenge CTA */}
+      <section className="py-24 md:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(37,99,235,0.08)_0%,_transparent_60%)]" />
+        <div className="max-w-4xl mx-auto px-6 md:px-12 lg:px-24 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <Trophy size={32} className="text-[#2563EB] mx-auto mb-6" />
+            <h2 className="text-3xl md:text-5xl tracking-tighter font-bold gradient-text mb-4">
+              30-Day Thinking Challenge
+            </h2>
+            <p className="text-[#A1A1AA] text-lg mb-8 max-w-xl mx-auto">
+              Pick 5 mental models. Practice them daily. Track your streak. Transform how you think in just 30 days.
+            </p>
+            {stats?.challenge_active ? (
+              <Link
+                to="/challenge"
+                data-testid="challenge-cta"
+                className="rounded-full px-8 py-4 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold tracking-wide hover:scale-105 transition-transform duration-200 shadow-[0_0_20px_rgba(37,99,235,0.3)] inline-flex items-center gap-2"
+              >
+                Continue Challenge ({stats.challenge_progress}/30 days)
+                <ArrowRight size={16} />
+              </Link>
+            ) : (
+              <Link
+                to="/challenge"
+                data-testid="challenge-cta"
+                className="rounded-full px-8 py-4 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold tracking-wide hover:scale-105 transition-transform duration-200 shadow-[0_0_20px_rgba(37,99,235,0.3)] inline-flex items-center gap-2"
+              >
+                Start the Challenge
+                <ArrowRight size={16} />
+              </Link>
+            )}
+          </motion.div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="py-16 border-t border-white/5">
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
