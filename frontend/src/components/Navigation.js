@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, BookOpen, Map, PenLine, Menu, X } from "lucide-react";
+import { Search, BookOpen, Map, PenLine, Menu, X, Brain } from "lucide-react";
 
 export const Navigation = () => {
   const location = useLocation();
@@ -33,24 +33,26 @@ export const Navigation = () => {
         scrolled ? "bg-[#050505]/90 backdrop-blur-xl border-b border-white/5" : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link
             to="/"
             data-testid="nav-logo"
-            className="font-serif text-lg md:text-xl tracking-tight text-white hover:opacity-80 transition-opacity duration-200"
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity duration-200"
           >
-            AI-Powered Mind
+            <Brain size={22} strokeWidth={1.5} className="text-[#2563EB]" />
+            <span className="font-bold text-lg tracking-tight text-white">
+              AI-Powered Mind
+            </span>
           </Link>
 
-          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             {links.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
                 data-testid={`nav-${link.label.toLowerCase().replace(' ', '-')}`}
-                className={`nav-link flex items-center gap-2 text-sm font-sans tracking-wide transition-colors duration-200 ${
+                className={`nav-link flex items-center gap-2 text-sm font-medium tracking-wide transition-colors duration-200 ${
                   isActive(link.to) ? "active" : ""
                 }`}
               >
@@ -60,7 +62,6 @@ export const Navigation = () => {
             ))}
           </div>
 
-          {/* Mobile Toggle */}
           <button
             data-testid="mobile-menu-toggle"
             className="md:hidden p-2 text-white/60 hover:text-white transition-colors duration-200"
@@ -71,7 +72,6 @@ export const Navigation = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {mobileOpen && (
         <div className="md:hidden bg-[#0a0a0a]/95 backdrop-blur-xl border-t border-white/5">
           <div className="px-6 py-6 flex flex-col gap-4">
@@ -80,8 +80,8 @@ export const Navigation = () => {
                 key={link.to}
                 to={link.to}
                 data-testid={`mobile-nav-${link.label.toLowerCase().replace(' ', '-')}`}
-                className={`flex items-center gap-3 py-2 text-sm font-sans transition-colors duration-200 ${
-                  isActive(link.to) ? "text-white" : "text-white/50 hover:text-white/80"
+                className={`flex items-center gap-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                  isActive(link.to) ? "text-[#2563EB]" : "text-white/50 hover:text-white/80"
                 }`}
               >
                 <link.icon size={18} strokeWidth={1.5} />
