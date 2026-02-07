@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Brain, Target, Lightbulb, Compass, BookOpen, Cpu, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Brain, Target, Lightbulb, Compass, BookOpen, Cpu, CheckCircle2, Sparkles, Trophy, Copy, Check } from "lucide-react";
 import axios from "axios";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -18,6 +18,9 @@ const sectionIcons = {
 export default function LandingPage() {
   const [sections, setSections] = useState([]);
   const [intro, setIntro] = useState(null);
+  const [dailyModel, setDailyModel] = useState(null);
+  const [stats, setStats] = useState(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     axios.get(`${API}/sections`).then((r) => setSections(r.data)).catch(console.error);
