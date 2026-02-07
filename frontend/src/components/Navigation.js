@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, BookOpen, Map, PenLine, Menu, X, Brain } from "lucide-react";
+import { Search, BookOpen, Map, PenLine, Menu, X, Brain, Trophy, Bookmark } from "lucide-react";
 
 export const Navigation = () => {
   const location = useLocation();
@@ -21,8 +21,10 @@ export const Navigation = () => {
 
   const links = [
     { to: "/explore", label: "Explore", icon: BookOpen },
+    { to: "/challenge", label: "30-Day", icon: Trophy },
     { to: "/mindmap", label: "Mind Map", icon: Map },
     { to: "/search", label: "Search", icon: Search },
+    { to: "/bookmarks", label: "Saved", icon: Bookmark },
     { to: "/journal", label: "Journal", icon: PenLine },
   ];
 
@@ -35,28 +37,22 @@ export const Navigation = () => {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link
-            to="/"
-            data-testid="nav-logo"
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity duration-200"
-          >
+          <Link to="/" data-testid="nav-logo" className="flex items-center gap-2 hover:opacity-80 transition-opacity duration-200">
             <Brain size={22} strokeWidth={1.5} className="text-[#2563EB]" />
-            <span className="font-bold text-lg tracking-tight text-white">
-              AI-Powered Mind
-            </span>
+            <span className="font-bold text-lg tracking-tight text-white">AI-Powered Mind</span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {links.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
                 data-testid={`nav-${link.label.toLowerCase().replace(' ', '-')}`}
-                className={`nav-link flex items-center gap-2 text-sm font-medium tracking-wide transition-colors duration-200 ${
+                className={`nav-link flex items-center gap-1.5 text-sm font-medium tracking-wide transition-colors duration-200 ${
                   isActive(link.to) ? "active" : ""
                 }`}
               >
-                <link.icon size={16} strokeWidth={1.5} />
+                <link.icon size={15} strokeWidth={1.5} />
                 {link.label}
               </Link>
             ))}
