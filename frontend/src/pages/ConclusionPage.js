@@ -26,22 +26,22 @@ export default function ConclusionPage() {
           <Link
             to="/explore"
             data-testid="back-from-conclusion"
-            className="inline-flex items-center gap-2 text-white/40 text-sm mb-12 hover:text-white/60 transition-colors duration-200"
+            className="inline-flex items-center gap-2 text-[#A1A1AA] text-sm mb-12 hover:text-white transition-colors duration-200"
           >
             <ArrowLeft size={14} />
             Back to Domains
           </Link>
 
-          <p className="text-white/40 font-mono text-xs tracking-[0.3em] uppercase mb-4">
+          <p className="text-xs uppercase tracking-[0.2em] text-[#2563EB] font-mono mb-4">
             Conclusion
           </p>
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl tracking-tight text-white mb-16 leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl tracking-tighter font-bold gradient-text mb-16 leading-tight">
             {conclusion.title}
           </h1>
 
           {/* Key Takeaways */}
           <div className="mb-20">
-            <h2 className="font-serif text-xl md:text-2xl text-white mb-8 tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
               Key Takeaways
             </h2>
             <div className="space-y-4">
@@ -54,10 +54,10 @@ export default function ConclusionPage() {
                   transition={{ duration: 0.5, delay: i * 0.08 }}
                   className="flex items-start gap-4"
                 >
-                  <span className="text-white/20 font-mono text-xs mt-1 flex-shrink-0 w-6">
+                  <span className="text-[#2563EB] font-mono text-xs mt-1 flex-shrink-0 w-6">
                     0{i + 1}
                   </span>
-                  <p className="text-white/60 text-base leading-relaxed">{item}</p>
+                  <p className="text-[#A1A1AA] text-base leading-relaxed">{item}</p>
                 </motion.div>
               ))}
             </div>
@@ -65,7 +65,7 @@ export default function ConclusionPage() {
 
           {/* How to Apply */}
           <div className="mb-20">
-            <h2 className="font-serif text-xl md:text-2xl text-white mb-8 tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
               How to Apply
             </h2>
             <div className="space-y-4">
@@ -78,28 +78,28 @@ export default function ConclusionPage() {
                   transition={{ duration: 0.5, delay: i * 0.08 }}
                   className="flex items-start gap-4"
                 >
-                  <span className="text-white/20 font-mono text-xs mt-1 flex-shrink-0 w-6">
+                  <span className="text-[#2563EB] font-mono text-xs mt-1 flex-shrink-0 w-6">
                     0{i + 1}
                   </span>
-                  <p className="text-white/60 text-base leading-relaxed">{item}</p>
+                  <p className="text-[#A1A1AA] text-base leading-relaxed">{item}</p>
                 </motion.div>
               ))}
             </div>
           </div>
 
           {/* 30-Day Challenge */}
-          <div className="glass-card rounded-2xl p-8 md:p-10 mb-20">
-            <h2 className="font-serif text-xl md:text-2xl text-white mb-6 tracking-tight">
+          <div className="bg-[#0F0F0F] border border-[#2563EB]/20 rounded-2xl p-8 md:p-10 mb-20">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
               30-Day Challenge
             </h2>
-            <p className="text-white/50 text-base leading-relaxed">
+            <p className="text-[#A1A1AA] text-base leading-relaxed">
               {conclusion.challenge}
             </p>
           </div>
 
           {/* Final Thought */}
           <div className="mb-20 text-center py-12">
-            <blockquote className="font-serif text-xl md:text-2xl text-white/60 italic max-w-2xl mx-auto leading-relaxed">
+            <blockquote className="text-xl md:text-2xl font-bold text-white/60 italic max-w-2xl mx-auto leading-relaxed">
               "{conclusion.final_thought}"
             </blockquote>
           </div>
@@ -109,15 +109,15 @@ export default function ConclusionPage() {
             <Link
               to="/explore"
               data-testid="conclusion-explore-btn"
-              className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-sm font-medium text-black hover:scale-105 transition-transform duration-200 gap-2"
+              className="rounded-full px-8 py-4 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold tracking-wide hover:scale-105 transition-transform duration-200 shadow-[0_0_20px_rgba(37,99,235,0.3)] flex items-center"
             >
               Explore Models
-              <ArrowRight size={16} />
+              <ArrowRight className="ml-2 w-4 h-4" />
             </Link>
             <Link
               to="/journal"
               data-testid="conclusion-journal-btn"
-              className="inline-flex items-center justify-center rounded-full border border-white/20 bg-transparent px-8 py-3.5 text-sm font-medium text-white hover:bg-white/10 transition-colors duration-200 gap-2"
+              className="rounded-full px-8 py-4 bg-transparent border border-white/20 text-white hover:bg-white/5 transition-colors duration-200 flex items-center"
             >
               Start Journaling
             </Link>

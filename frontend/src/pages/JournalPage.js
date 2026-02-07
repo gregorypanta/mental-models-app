@@ -57,11 +57,8 @@ export default function JournalPage() {
   const formatDate = (iso) => {
     const d = new Date(iso);
     return d.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+      month: "short", day: "numeric", year: "numeric",
+      hour: "2-digit", minute: "2-digit",
     });
   };
 
@@ -74,20 +71,20 @@ export default function JournalPage() {
           transition={{ duration: 0.6 }}
         >
           <div className="flex items-center gap-3 mb-4">
-            <PenLine size={18} strokeWidth={1.5} className="text-white/40" />
-            <p className="text-white/40 font-mono text-xs tracking-[0.3em] uppercase">Reflection</p>
+            <PenLine size={18} strokeWidth={1.5} className="text-[#2563EB]" />
+            <p className="text-xs uppercase tracking-[0.2em] text-[#2563EB] font-mono">Reflection</p>
           </div>
-          <h1 className="font-serif text-3xl sm:text-4xl tracking-tight text-white mb-4">
+          <h1 className="text-4xl md:text-6xl tracking-tighter font-bold gradient-text mb-4">
             Journal
           </h1>
-          <p className="text-white/40 text-base max-w-lg mb-16 leading-relaxed">
+          <p className="text-[#A1A1AA] text-lg max-w-lg mb-16 leading-relaxed">
             Capture your reflections as you explore mental models. Writing clarifies thinking.
           </p>
 
           {/* Writing Area */}
-          <div className="glass-card rounded-2xl p-6 md:p-8 mb-8">
+          <div className="bg-[#0F0F0F] border border-white/5 rounded-2xl p-6 md:p-8 mb-8">
             {modelTitle && (
-              <p className="text-white/30 text-xs font-mono mb-4">
+              <p className="text-[#2563EB] text-xs font-mono mb-4">
                 Reflecting on: {modelTitle}
               </p>
             )}
@@ -103,7 +100,7 @@ export default function JournalPage() {
                 data-testid="save-journal-btn"
                 onClick={saveEntry}
                 disabled={!content.trim() || saving}
-                className="inline-flex items-center justify-center rounded-full bg-white px-6 py-2.5 text-sm font-medium text-black hover:scale-105 transition-transform duration-200 disabled:opacity-30 disabled:hover:scale-100"
+                className="rounded-full px-6 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-sm font-bold hover:scale-105 transition-transform duration-200 disabled:opacity-30 disabled:hover:scale-100"
               >
                 {saving ? "Saving..." : "Save Reflection"}
               </button>
@@ -113,7 +110,7 @@ export default function JournalPage() {
           {/* Entries */}
           {entries.length > 0 && (
             <div>
-              <p className="text-white/30 font-mono text-xs mb-6">
+              <p className="text-[#A1A1AA] font-mono text-xs mb-6">
                 {entries.length} reflection{entries.length !== 1 ? "s" : ""}
               </p>
               <div className="space-y-4">
@@ -123,16 +120,16 @@ export default function JournalPage() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: i * 0.03 }}
-                    className="glass-card rounded-xl p-6 group"
+                    className="bg-[#0F0F0F] border border-white/5 rounded-xl p-6 group hover:border-blue-500/20 transition-colors duration-300"
                     data-testid={`journal-entry-${i}`}
                   >
                     <div className="flex items-start justify-between gap-4 mb-3">
                       <div className="flex items-center gap-3">
-                        <span className="text-white/20 font-mono text-xs">
+                        <span className="text-[#A1A1AA] font-mono text-xs">
                           {formatDate(entry.created_at)}
                         </span>
                         {entry.model_title && (
-                          <span className="text-white/15 font-mono text-xs">
+                          <span className="blue-badge">
                             {entry.model_title}
                           </span>
                         )}
@@ -145,7 +142,7 @@ export default function JournalPage() {
                         <Trash2 size={14} />
                       </button>
                     </div>
-                    <p className="text-white/60 text-sm leading-relaxed whitespace-pre-wrap">
+                    <p className="text-[#A1A1AA] text-sm leading-relaxed whitespace-pre-wrap">
                       {entry.content}
                     </p>
                   </motion.div>

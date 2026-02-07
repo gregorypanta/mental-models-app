@@ -1,51 +1,56 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactFlow, {
-  MiniMap,
   Controls,
   Background,
   useNodesState,
   useEdgesState,
 } from "reactflow";
 import "reactflow/dist/style.css";
+import { Brain, Zap, Lightbulb, Target, BookOpen, Cpu } from "lucide-react";
 import axios from "axios";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-const sectionColors = {
-  1: "#3b3b3b",
-  2: "#2d3b2d",
-  3: "#3b2d3b",
-  4: "#2d2d3b",
-  5: "#3b3b2d",
-  6: "#2d3b3b",
+const CustomNode = ({ data }) => {
+  const isCenter = data.isCenter;
+  const isSection = data.isSection;
+
+  return (
+    <div
+      className={`
+        px-4 py-3 rounded-xl border transition-all duration-200 cursor-pointer
+        ${
+          isCenter
+            ? "bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] border-transparent text-white shadow-[0_0_30px_rgba(37,99,235,0.4)]"
+            : isSection
+            ? "bg-[#0F0F0F] border-white/10 text-[#EDEDED] hover:border-[#2563EB]/50 hover:shadow-[0_0_20px_rgba(37,99,235,0.2)]"
+            : "bg-[#0A0A0A] border-white/5 text-[#A1A1AA] hover:border-[#2563EB]/30 hover:text-white"
+        }
+      `}
+    >
+      <div className="flex items-center gap-2">
+        {isCenter && <Brain className="w-5 h-5 text-white" />}
+        {isSection && data.icon}
+        <span className={`font-semibold ${isCenter ? "text-lg" : isSection ? "text-sm" : "text-xs"}`}>
+          {data.label}
+        </span>
+      </div>
+      {isSection && (
+        <span className="text-xs text-[#A1A1AA] mt-1 block">{data.modelCount} Models</span>
+      )}
+    </div>
+  );
 };
 
-const CustomNode = ({ data }) => (
-  <div
-    style={{
-      background: data.bg || "#121212",
-      border: `1px solid ${data.borderColor || "#333"}`,
-      borderRadius: data.isCenter ? "50%" : "12px",
-      padding: data.isCenter ? "30px" : data.isSection ? "14px 24px" : "10px 16px",
-      color: "#fff",
-      fontSize: data.isCenter ? "14px" : data.isSection ? "13px" : "11px",
-      fontFamily: data.isCenter || data.isSection ? "'Playfair Display', serif" : "'Manrope', sans-serif",
-      width: data.isCenter ? "140px" : data.isSection ? "auto" : "auto",
-      height: data.isCenter ? "140px" : "auto",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      textAlign: "center",
-      cursor: data.clickable ? "pointer" : "default",
-      maxWidth: data.isSection ? "180px" : "160px",
-      lineHeight: 1.3,
-      opacity: data.isCenter ? 1 : data.isSection ? 0.9 : 0.7,
-    }}
-  >
-    {data.label}
-  </div>
-);
+const sectionIconMap = {
+  1: <Brain className="w-5 h-5 text-[#2563EB]" />,
+  2: <Zap className="w-5 h-5 text-[#2563EB]" />,
+  3: <Lightbulb className="w-5 h-5 text-[#2563EB]" />,
+  4: <Target className="w-5 h-5 text-[#2563EB]" />,
+  5: <BookOpen className="w-5 h-5 text-[#2563EB]" />,
+  6: <Cpu className="w-5 h-5 text-[#2563EB]" />,
+};
 
 export default function MindMapPage() {
   const navigate = useNavigate();
@@ -76,36 +81,33 @@ export default function MindMapPage() {
     newNodes.push({
       id: "center",
       type: "custom",
-      position: { x: 0, y: 0 },
-      data: {
-        label: "AI-Powered Mind",
-        isCenter: true,
-        bg: "#1a1a1a",
-        borderColor: "#555",
-      },
+      position: { x: 400, y: 300 },
+      data: { label: "AI-Powered Mind", isCenter: true },
     });
 
-    const sectionAngle = (2 * Math.PI) / sections.length;
-    const sectionRadius = 350;
-    const modelRadius = 200;
+    const positions = [
+      { x: 80, y: 80 },
+      { x: 720, y: 80 },
+      { x: 80, y: 520 },
+      { x: 720, y: 520 },
+      { x: 400, y: 0 },
+      { x: 400, y: 600 },
+    ];
 
     sections.forEach((section, si) => {
-      const angle = sectionAngle * si - Math.PI / 2;
-      const sx = Math.cos(angle) * sectionRadius;
-      const sy = Math.sin(angle) * sectionRadius;
       const sectionId = `section-${section.slug}`;
+      const pos = positions[si] || { x: 400 + si * 200, y: 300 };
 
       newNodes.push({
         id: sectionId,
         type: "custom",
-        position: { x: sx - 80, y: sy - 20 },
+        position: pos,
         data: {
           label: section.short_name,
           isSection: true,
-          clickable: true,
           slug: section.slug,
-          bg: sectionColors[section.index] || "#222",
-          borderColor: "#555",
+          modelCount: section.model_count,
+          icon: sectionIconMap[section.index],
         },
       });
 
@@ -114,22 +116,23 @@ export default function MindMapPage() {
         source: "center",
         target: sectionId,
         type: "default",
-        style: { stroke: "#333", strokeWidth: 1 },
-        animated: false,
+        style: { stroke: "#2563EB", strokeWidth: 1.5 },
+        animated: true,
+        markerEnd: { type: "arrowclosed", color: "#2563EB" },
       });
 
-      // Show first 8 models per section
+      // Show first 6 models per section
       const sectionModels = models
         .filter((m) => m.section_slug === section.slug)
-        .slice(0, 8);
+        .slice(0, 6);
 
-      const modelAngleSpread = Math.PI * 0.6;
-      const startAngle = angle - modelAngleSpread / 2;
-
+      const angle = Math.atan2(pos.y - 300, pos.x - 400);
       sectionModels.forEach((model, mi) => {
-        const mAngle = startAngle + (modelAngleSpread / (sectionModels.length - 1 || 1)) * mi;
-        const mx = sx + Math.cos(mAngle) * modelRadius - 60;
-        const my = sy + Math.sin(mAngle) * modelRadius - 12;
+        const spread = Math.PI * 0.5;
+        const mAngle = angle - spread / 2 + (spread / (sectionModels.length - 1 || 1)) * mi;
+        const dist = 180;
+        const mx = pos.x + Math.cos(mAngle) * dist;
+        const my = pos.y + Math.sin(mAngle) * dist;
         const modelId = `model-${model.section_slug}-${model.model_index}`;
 
         newNodes.push({
@@ -138,11 +141,8 @@ export default function MindMapPage() {
           position: { x: mx, y: my },
           data: {
             label: model.title,
-            clickable: true,
             sectionSlug: model.section_slug,
             modelIndex: model.model_index,
-            bg: "#161616",
-            borderColor: "#2a2a2a",
           },
         });
 
@@ -150,7 +150,8 @@ export default function MindMapPage() {
           id: `e-${sectionId}-${modelId}`,
           source: sectionId,
           target: modelId,
-          style: { stroke: "#222", strokeWidth: 0.5 },
+          type: "default",
+          style: { stroke: "#27272A", strokeWidth: 1 },
         });
       });
     });
@@ -171,24 +172,37 @@ export default function MindMapPage() {
   );
 
   return (
-    <div className="h-screen w-full pt-16" data-testid="mindmap-page">
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onNodeClick={onNodeClick}
-        nodeTypes={nodeTypes}
-        fitView
-        fitViewOptions={{ padding: 0.2 }}
-        minZoom={0.3}
-        maxZoom={2}
-        attributionPosition="bottom-left"
-        style={{ background: "#050505" }}
-      >
-        <Controls position="bottom-right" />
-        <Background color="#1a1a1a" gap={40} size={1} />
-      </ReactFlow>
+    <div className="min-h-screen" data-testid="mindmap-page">
+      <div className="pt-20">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-8">
+          <p className="text-xs uppercase tracking-[0.2em] text-[#2563EB] font-mono mb-4 text-center">Interactive Preview</p>
+          <h2 className="text-4xl md:text-6xl tracking-tighter font-bold gradient-text mb-4 text-center">Explore the Mind Map</h2>
+          <p className="text-[#A1A1AA] text-lg max-w-2xl mx-auto text-center mb-8">
+            Navigate through 200+ mental models organized into six powerful categories. Click on nodes to explore.
+          </p>
+        </div>
+        <div className="bg-[#050505] rounded-2xl border border-white/5 overflow-hidden mx-4 md:mx-12 lg:mx-24">
+          <div className="h-[500px] md:h-[650px] w-full">
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onNodeClick={onNodeClick}
+              nodeTypes={nodeTypes}
+              fitView
+              fitViewOptions={{ padding: 0.3 }}
+              minZoom={0.3}
+              maxZoom={2}
+              attributionPosition="bottom-left"
+              style={{ background: "#050505" }}
+            >
+              <Controls position="bottom-right" />
+              <Background color="#27272A" gap={20} size={1} variant="dots" />
+            </ReactFlow>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

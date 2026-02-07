@@ -34,18 +34,10 @@ export default function SearchPage() {
     setLoading(false);
   }, [query, activeFilter]);
 
-  // Load all models on initial mount so page is not empty
+  // Load all on mount
   useEffect(() => {
-    const loadAll = async () => {
-      setLoading(true);
-      try {
-        const { data } = await axios.get(`${API}/models?limit=300`);
-        setResults(data);
-        setHasSearched(true);
-      } catch (e) { console.error(e); }
-      setLoading(false);
-    };
-    loadAll();
+    doSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -55,33 +47,33 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-screen pt-28 pb-24" data-testid="search-page">
-      <div className="max-w-4xl mx-auto px-6 md:px-12">
+      <div className="max-w-4xl mx-auto px-6 md:px-12 lg:px-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-white/40 font-mono text-xs tracking-[0.3em] uppercase mb-4">Search</p>
-          <h1 className="font-serif text-3xl sm:text-4xl tracking-tight text-white mb-12">
+          <p className="text-xs uppercase tracking-[0.2em] text-[#2563EB] font-mono mb-4">Search</p>
+          <h1 className="text-4xl md:text-6xl tracking-tighter font-bold gradient-text mb-12">
             Find a Model
           </h1>
 
           {/* Search Input */}
           <div className="relative mb-8">
-            <Search size={18} className="absolute left-0 top-1/2 -translate-y-1/2 text-white/30" />
+            <Search size={18} className="absolute left-0 top-1/2 -translate-y-1/2 text-[#2563EB]/50" />
             <input
               data-testid="search-input"
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search 200+ mental models..."
-              className="w-full h-12 border-b border-white/20 bg-transparent pl-8 pr-10 text-sm text-white placeholder:text-white/25 focus:border-white/50 focus:outline-none"
+              className="w-full h-12 border-b border-white/20 bg-transparent pl-8 pr-10 text-sm text-white placeholder:text-white/25 focus:border-[#2563EB]/50 focus:outline-none transition-colors duration-200"
             />
             {query && (
               <button
                 data-testid="clear-search"
-                onClick={() => { setQuery(""); setHasSearched(false); }}
-                className="absolute right-0 top-1/2 -translate-y-1/2 p-1 text-white/30 hover:text-white/60 transition-colors duration-200"
+                onClick={() => { setQuery(""); }}
+                className="absolute right-0 top-1/2 -translate-y-1/2 p-1 text-[#A1A1AA] hover:text-white transition-colors duration-200"
               >
                 <X size={16} />
               </button>
@@ -93,10 +85,10 @@ export default function SearchPage() {
             <button
               data-testid="filter-all"
               onClick={() => setActiveFilter(null)}
-              className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors duration-200 ${
+              className={`rounded-full px-4 py-1.5 text-xs font-bold transition-colors duration-200 ${
                 !activeFilter
-                  ? "bg-white text-black"
-                  : "border border-white/15 text-white/50 hover:text-white/80 hover:border-white/30"
+                  ? "bg-[#2563EB] text-white shadow-[0_0_10px_rgba(37,99,235,0.3)]"
+                  : "border border-white/15 text-[#A1A1AA] hover:text-white hover:border-[#2563EB]/30"
               }`}
             >
               All
@@ -106,10 +98,10 @@ export default function SearchPage() {
                 key={s.slug}
                 data-testid={`filter-${s.slug}`}
                 onClick={() => setActiveFilter(activeFilter === s.slug ? null : s.slug)}
-                className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors duration-200 ${
+                className={`rounded-full px-4 py-1.5 text-xs font-bold transition-colors duration-200 ${
                   activeFilter === s.slug
-                    ? "bg-white text-black"
-                    : "border border-white/15 text-white/50 hover:text-white/80 hover:border-white/30"
+                    ? "bg-[#2563EB] text-white shadow-[0_0_10px_rgba(37,99,235,0.3)]"
+                    : "border border-white/15 text-[#A1A1AA] hover:text-white hover:border-[#2563EB]/30"
                 }`}
               >
                 {s.short_name}
@@ -126,14 +118,14 @@ export default function SearchPage() {
             </div>
           ) : hasSearched ? (
             results.length > 0 ? (
-              <div className="space-y-2">
-                <p className="text-white/30 text-xs font-mono mb-6">{results.length} results</p>
+              <div className="space-y-1">
+                <p className="text-[#A1A1AA] text-xs font-mono mb-6">{results.length} results</p>
                 {results.map((model, i) => (
                   <motion.div
                     key={model.id}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: i * 0.02 }}
+                    transition={{ duration: 0.3, delay: Math.min(i * 0.01, 0.5) }}
                   >
                     <Link
                       to={`/model/${model.section_slug}/${model.model_index}`}
@@ -141,22 +133,22 @@ export default function SearchPage() {
                       className="flex items-center justify-between p-4 rounded-xl hover:bg-white/5 transition-colors duration-200 group"
                     >
                       <div className="flex items-center gap-4 min-w-0">
-                        <span className="text-white/15 font-mono text-xs flex-shrink-0 w-10">
+                        <span className="text-[#2563EB]/40 font-mono text-xs flex-shrink-0 w-10">
                           {String(model.section_index).padStart(2, '0')}.{String(model.model_index).padStart(2, '0')}
                         </span>
                         <div className="min-w-0">
-                          <h3 className="font-serif text-sm text-white truncate">{model.title}</h3>
-                          <p className="text-white/30 text-xs mt-0.5 truncate">{model.section_name}</p>
+                          <h3 className="font-bold text-sm text-white truncate">{model.title}</h3>
+                          <p className="text-[#A1A1AA] text-xs mt-0.5 truncate">{model.section_name}</p>
                         </div>
                       </div>
-                      <ArrowRight size={14} className="text-white/20 group-hover:text-white/50 flex-shrink-0 group-hover:translate-x-1 transition-transform duration-200" />
+                      <ArrowRight size={14} className="text-white/20 group-hover:text-[#2563EB] flex-shrink-0 group-hover:translate-x-1 transition-transform duration-200" />
                     </Link>
                   </motion.div>
                 ))}
               </div>
             ) : (
               <div className="text-center py-20">
-                <p className="text-white/30 text-sm">No models found for "{query}"</p>
+                <p className="text-[#A1A1AA] text-sm">No models found for "{query}"</p>
               </div>
             )
           ) : (
