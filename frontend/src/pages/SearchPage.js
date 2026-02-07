@@ -19,7 +19,6 @@ export default function SearchPage() {
   }, []);
 
   const doSearch = useCallback(async () => {
-    if (!query.trim() && !activeFilter) return;
     setLoading(true);
     setHasSearched(true);
     try {
