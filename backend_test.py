@@ -313,6 +313,10 @@ def main():
         tester.test_journal_operations()
         tester.test_introduction_endpoint()
         tester.test_conclusion_endpoint()
+        tester.test_daily_model()
+        tester.test_stats()
+        tester.test_related_models()
+        tester.test_challenge_operations()
         
     finally:
         # Cleanup
