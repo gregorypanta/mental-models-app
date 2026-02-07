@@ -14,6 +14,7 @@ export default function DomainPage() {
   const [sections, setSections] = useState([]);
   const [expandedId, setExpandedId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { isRead, isBookmarked, toggleBookmark } = useProgress();
 
   const currentSection = sections.find((s) => s.slug === slug);
 
