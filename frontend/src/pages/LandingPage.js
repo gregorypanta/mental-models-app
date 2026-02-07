@@ -25,7 +25,17 @@ export default function LandingPage() {
   useEffect(() => {
     axios.get(`${API}/sections`).then((r) => setSections(r.data)).catch(console.error);
     axios.get(`${API}/introduction`).then((r) => setIntro(r.data)).catch(console.error);
+    axios.get(`${API}/daily-model`).then((r) => setDailyModel(r.data)).catch(console.error);
+    axios.get(`${API}/stats`).then((r) => setStats(r.data)).catch(console.error);
   }, []);
+
+  const copyPrompt = () => {
+    if (!dailyModel) return;
+    navigator.clipboard.writeText(dailyModel.ai_prompt).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   return (
     <div className="min-h-screen" data-testid="landing-page">
