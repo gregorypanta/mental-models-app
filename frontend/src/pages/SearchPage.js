@@ -35,6 +35,20 @@ export default function SearchPage() {
     setLoading(false);
   }, [query, activeFilter]);
 
+  // Load all models on initial mount so page is not empty
+  useEffect(() => {
+    const loadAll = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(`${API}/models?limit=300`);
+        setResults(data);
+        setHasSearched(true);
+      } catch (e) { console.error(e); }
+      setLoading(false);
+    };
+    loadAll();
+  }, []);
+
   useEffect(() => {
     const timer = setTimeout(doSearch, 300);
     return () => clearTimeout(timer);
