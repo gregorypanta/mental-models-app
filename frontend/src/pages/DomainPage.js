@@ -44,7 +44,7 @@ export default function DomainPage() {
           <Link
             to="/explore"
             data-testid="back-to-explore"
-            className="inline-flex items-center gap-2 text-white/40 text-sm mb-8 hover:text-white/60 transition-colors duration-200"
+            className="inline-flex items-center gap-2 text-[#A1A1AA] text-sm mb-8 hover:text-white transition-colors duration-200"
           >
             <ArrowLeft size={14} />
             All Domains
@@ -52,13 +52,13 @@ export default function DomainPage() {
 
           {currentSection && (
             <div className="mb-16">
-              <p className="text-white/30 font-mono text-xs tracking-[0.3em] uppercase mb-4">
+              <p className="text-xs uppercase tracking-[0.2em] text-[#2563EB] font-mono mb-4">
                 Section {String(currentSection.index).padStart(2, '0')}
               </p>
-              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl tracking-tight text-white mb-4">
+              <h1 className="text-4xl md:text-6xl tracking-tighter font-bold gradient-text mb-4">
                 {currentSection.short_name}
               </h1>
-              <p className="text-white/40 text-base max-w-xl leading-relaxed">
+              <p className="text-[#A1A1AA] text-lg max-w-xl leading-relaxed">
                 {currentSection.description}
               </p>
             </div>
@@ -72,7 +72,7 @@ export default function DomainPage() {
             ))}
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {models.map((model, i) => {
               const isExpanded = expandedId === model.id;
               return (
@@ -80,11 +80,11 @@ export default function DomainPage() {
                   key={model.id}
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: i * 0.03 }}
+                  transition={{ duration: 0.4, delay: i * 0.02 }}
                 >
                   <div
-                    className={`model-card cursor-pointer transition-colors duration-300 ${
-                      isExpanded ? "border-white/15" : ""
+                    className={`model-card cursor-pointer ${
+                      isExpanded ? "border-[#2563EB]/30 shadow-[0_0_20px_rgba(37,99,235,0.1)]" : ""
                     }`}
                     data-testid={`model-card-${model.model_index}`}
                   >
@@ -93,15 +93,15 @@ export default function DomainPage() {
                       onClick={() => setExpandedId(isExpanded ? null : model.id)}
                     >
                       <div className="flex items-start gap-4 flex-1 min-w-0">
-                        <span className="text-white/20 font-mono text-xs mt-1 flex-shrink-0 w-8">
+                        <span className="text-[#2563EB]/50 font-mono text-xs mt-1 flex-shrink-0 w-8">
                           {String(model.model_index).padStart(2, '0')}
                         </span>
                         <div className="min-w-0">
-                          <h3 className="font-serif text-lg text-white tracking-tight">
+                          <h3 className="text-lg font-bold text-white">
                             {model.title}
                           </h3>
                           {!isExpanded && (
-                            <p className="text-white/30 text-sm mt-1 line-clamp-1">
+                            <p className="text-[#A1A1AA] text-sm mt-1 line-clamp-1">
                               {model.explanation}
                             </p>
                           )}
@@ -109,7 +109,7 @@ export default function DomainPage() {
                       </div>
                       <button
                         data-testid={`toggle-model-${model.model_index}`}
-                        className="flex-shrink-0 p-1 text-white/30 hover:text-white/60 transition-colors duration-200"
+                        className="flex-shrink-0 p-1 text-[#A1A1AA] hover:text-[#2563EB] transition-colors duration-200"
                       >
                         {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                       </button>
@@ -119,26 +119,25 @@ export default function DomainPage() {
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3 }}
                         className="mt-6 pl-12 space-y-6"
                       >
                         <div>
-                          <p className="text-white/20 font-mono text-xs uppercase tracking-wider mb-2">Explanation</p>
-                          <p className="text-white/60 text-sm leading-relaxed">{model.explanation}</p>
+                          <p className="text-[#2563EB] font-mono text-xs uppercase tracking-wider mb-2">Explanation</p>
+                          <p className="text-[#A1A1AA] text-sm leading-relaxed">{model.explanation}</p>
                         </div>
                         <div>
-                          <p className="text-white/20 font-mono text-xs uppercase tracking-wider mb-2">Example</p>
+                          <p className="text-[#2563EB] font-mono text-xs uppercase tracking-wider mb-2">Example</p>
                           <p className="text-white/50 text-sm leading-relaxed italic">{model.example}</p>
                         </div>
                         <div>
-                          <p className="text-white/20 font-mono text-xs uppercase tracking-wider mb-3">AI Prompt</p>
+                          <p className="text-[#2563EB] font-mono text-xs uppercase tracking-wider mb-3">AI Prompt</p>
                           <CopyablePrompt prompt={model.ai_prompt} />
                         </div>
                         <Link
                           to={`/model/${model.section_slug}/${model.model_index}`}
                           data-testid={`view-model-detail-${model.model_index}`}
-                          className="inline-flex items-center gap-2 text-white/40 text-xs hover:text-white/70 transition-colors duration-200 mt-2"
+                          className="inline-flex items-center gap-2 text-[#2563EB] text-xs font-medium hover:text-[#3B82F6] transition-colors duration-200 mt-2"
                         >
                           Open full view <ArrowRight size={12} />
                         </Link>
@@ -151,13 +150,12 @@ export default function DomainPage() {
           </div>
         )}
 
-        {/* Navigation between sections */}
         <div className="mt-20 flex justify-between items-center border-t border-white/5 pt-12">
           {prevSection ? (
             <Link
               to={`/domain/${prevSection.slug}`}
               data-testid="prev-section"
-              className="flex items-center gap-2 text-white/40 text-sm hover:text-white/60 transition-colors duration-200"
+              className="flex items-center gap-2 text-[#A1A1AA] text-sm hover:text-white transition-colors duration-200"
             >
               <ArrowLeft size={14} />
               {prevSection.short_name}
@@ -167,7 +165,7 @@ export default function DomainPage() {
             <Link
               to={`/domain/${nextSection.slug}`}
               data-testid="next-section"
-              className="flex items-center gap-2 text-white/40 text-sm hover:text-white/60 transition-colors duration-200"
+              className="flex items-center gap-2 text-[#A1A1AA] text-sm hover:text-white transition-colors duration-200"
             >
               {nextSection.short_name}
               <ArrowRight size={14} />
@@ -176,7 +174,7 @@ export default function DomainPage() {
             <Link
               to="/conclusion"
               data-testid="go-to-conclusion"
-              className="flex items-center gap-2 text-white/40 text-sm hover:text-white/60 transition-colors duration-200"
+              className="flex items-center gap-2 text-[#2563EB] text-sm font-medium hover:text-[#3B82F6] transition-colors duration-200"
             >
               Conclusion
               <ArrowRight size={14} />
