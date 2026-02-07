@@ -193,6 +193,100 @@ class AIBooksAPITester:
         """Test getting conclusion content"""
         return self.run_test("Get Conclusion", "GET", "conclusion", 200)
 
+    def test_daily_model(self):
+        """Test getting daily model"""
+        success, response = self.run_test(
+            "Get Daily Model", "GET", "daily-model", 200,
+            expected_keys=["title", "explanation", "example", "ai_prompt", "section_name"]
+        )
+        if success and isinstance(response, dict):
+            if response.get("title") and response.get("explanation"):
+                print(f"   ✅ Daily model has title: {response.get('title')}")
+            else:
+                print(f"   ⚠️  Daily model missing title or explanation")
+        return success
+
+    def test_stats(self):
+        """Test getting stats"""
+        success, response = self.run_test(
+            "Get Stats", "GET", "stats", 200,
+            expected_keys=["total_models", "total_sections", "total_journal_entries", "challenge_progress", "challenge_active"]
+        )
+        if success and isinstance(response, dict):
+            print(f"   ✅ Stats: {response.get('total_models', 0)} models, {response.get('total_sections', 0)} sections")
+        return success
+
+    def test_related_models(self):
+        """Test getting related models"""
+        success, response = self.run_test(
+            "Get Related Models", "GET", "models/thinking-smarter/1/related", 200
+        )
+        if success and isinstance(response, list):
+            print(f"   ✅ Found {len(response)} related models")
+        return success
+
+    def test_challenge_operations(self):
+        """Test 30-day challenge operations"""
+        print(f"\n🏆 Testing Challenge Operations...")
+        
+        # First get 5 model IDs to use for challenge
+        models_success, models_response = self.run_test(
+            "Get Models for Challenge", "GET", "models?limit=5", 200
+        )
+        
+        if not models_success or not isinstance(models_response, list) or len(models_response) < 5:
+            print("❌ Cannot test challenge - need at least 5 models")
+            return False
+        
+        model_ids = [model["id"] for model in models_response[:5]]
+        print(f"   Using model IDs: {model_ids}")
+        
+        # Test creating a challenge
+        challenge_data = {"model_ids": model_ids}
+        success1, create_response = self.run_test(
+            "Create Challenge", "POST", "challenge", 201, data=challenge_data,
+            expected_keys=["id", "model_ids", "model_titles", "completed_days", "started_at", "is_active"]
+        )
+        
+        challenge_id = None
+        if success1 and isinstance(create_response, dict):
+            challenge_id = create_response.get("id")
+            print(f"   ✅ Created challenge with ID: {challenge_id}")
+        
+        # Test getting active challenge
+        success2, get_response = self.run_test(
+            "Get Active Challenge", "GET", "challenge/active", 200
+        )
+        
+        if success2 and get_response and isinstance(get_response, dict):
+            print(f"   ✅ Retrieved active challenge: {get_response.get('id')}")
+        
+        # Test completing a day
+        complete_data = {"day": 1, "reflection": "Test reflection for day 1"}
+        success3, complete_response = self.run_test(
+            "Complete Challenge Day", "POST", "challenge/complete-day", 200, data=complete_data
+        )
+        
+        if success3:
+            print(f"   ✅ Successfully completed day 1")
+        
+        # Test getting challenge logs
+        if challenge_id:
+            success4, logs_response = self.run_test(
+                "Get Challenge Logs", "GET", f"challenge/logs?challenge_id={challenge_id}", 200
+            )
+            if success4 and isinstance(logs_response, list):
+                print(f"   ✅ Retrieved {len(logs_response)} challenge logs")
+            
+            # Clean up - delete the challenge
+            success5, _ = self.run_test(
+                "Delete Challenge", "DELETE", f"challenge/{challenge_id}", 200
+            )
+            if success5:
+                print(f"   ✅ Successfully deleted challenge {challenge_id}")
+        
+        return success1 and success2 and success3
+
     def cleanup(self):
         """Clean up any test data"""
         for entry_id in self.journal_entries_created:
