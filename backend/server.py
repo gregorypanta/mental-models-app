@@ -153,7 +153,7 @@ async def get_journal_entries():
     return entries
 
 
-@api_router.post("/journal", response_model=JournalEntry)
+@api_router.post("/journal", response_model=JournalEntry, status_code=201)
 async def create_journal_entry(entry: JournalEntryCreate):
     journal = JournalEntry(**entry.model_dump())
     doc = journal.model_dump()
