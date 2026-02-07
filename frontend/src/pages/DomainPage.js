@@ -98,10 +98,13 @@ export default function DomainPage() {
                         <span className="text-[#2563EB]/50 font-mono text-xs mt-1 flex-shrink-0 w-8">
                           {String(model.model_index).padStart(2, '0')}
                         </span>
-                        <div className="min-w-0">
-                          <h3 className="text-lg font-bold text-white">
-                            {model.title}
-                          </h3>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            {isRead(model.id) && <CheckCircle2 size={14} className="text-[#10B981] flex-shrink-0" />}
+                            <h3 className="text-lg font-bold text-white">
+                              {model.title}
+                            </h3>
+                          </div>
                           {!isExpanded && (
                             <p className="text-[#A1A1AA] text-sm mt-1 line-clamp-1">
                               {model.explanation}
@@ -109,10 +112,17 @@ export default function DomainPage() {
                           )}
                         </div>
                       </div>
-                      <button
-                        data-testid={`toggle-model-${model.model_index}`}
-                        className="flex-shrink-0 p-1 text-[#A1A1AA] hover:text-[#2563EB] transition-colors duration-200"
-                      >
+                      <div className="flex items-center gap-1 flex-shrink-0">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); toggleBookmark(model.id); }}
+                          className="p-1 transition-colors duration-200"
+                        >
+                          <Bookmark size={14} className={isBookmarked(model.id) ? "fill-[#2563EB] text-[#2563EB]" : "text-white/20 hover:text-white/40"} />
+                        </button>
+                        <button
+                          data-testid={`toggle-model-${model.model_index}`}
+                          className="p-1 text-[#A1A1AA] hover:text-[#2563EB] transition-colors duration-200"
+                        >
                         {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                       </button>
                     </div>
