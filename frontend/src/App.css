@@ -1,34 +1,123 @@
-.App-logo {
-    height: 40vmin;
+.glass-card {
+    background: rgba(18, 18, 18, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(24, 24, 27, 0.7);
+}
+
+.model-card {
+    background: rgba(18, 18, 18, 0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 2rem;
+}
+
+.model-card:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 30px -15px rgba(255, 255, 255, 0.08);
+}
+
+.prompt-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.fade-mask {
+    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+}
+
+.hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
     pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
+.section-icon {
+    width: 48px;
+    height: 48px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.App-link {
-    color: #61dafb;
+.journal-textarea {
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    width: 100%;
+    min-height: 200px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #ededed;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.journal-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.nav-link {
+    position: relative;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.nav-link:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.nav-link.active {
+    color: #fff;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #fff;
+}
+
+/* React Flow custom styles */
+.react-flow__background {
+    background-color: #050505 !important;
+}
+.react-flow__edge-path {
+    stroke: #333 !important;
+    stroke-width: 1 !important;
+}
+.react-flow__controls {
+    background: #121212 !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    border-radius: 12px !important;
+}
+.react-flow__controls-button {
+    background: #121212 !important;
+    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+    fill: #aaa !important;
+}
+.react-flow__controls-button:hover {
+    background: #1a1a1a !important;
 }
