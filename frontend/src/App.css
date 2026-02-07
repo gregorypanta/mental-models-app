@@ -1,65 +1,61 @@
-.glass-card {
-    background: rgba(18, 18, 18, 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.glass-card:hover {
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(24, 24, 27, 0.7);
-}
-
+/* Card styles */
 .model-card {
-    background: rgba(18, 18, 18, 0.5);
-    backdrop-filter: blur(12px);
+    background: #0F0F0F;
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 16px;
     padding: 2rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-
 .model-card:hover {
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 30px -15px rgba(255, 255, 255, 0.08);
+    border-color: rgba(37, 99, 235, 0.3);
+    box-shadow: 0 0 30px -15px rgba(37, 99, 235, 0.15);
 }
 
+.glass-card {
+    background: #0F0F0F;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.glass-card:hover {
+    border-color: rgba(37, 99, 235, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px -10px rgba(37, 99, 235, 0.15);
+}
+
+/* Prompt box */
 .prompt-box {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(37, 99, 235, 0.05);
+    border: 1px solid rgba(37, 99, 235, 0.15);
     border-radius: 12px;
     font-family: 'JetBrains Mono', monospace;
 }
 
-.fade-mask {
-    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+/* Section icon container */
+.section-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(37, 99, 235, 0.1);
+    transition: background 0.3s ease;
+}
+.group:hover .section-icon {
+    background: rgba(37, 99, 235, 0.2);
 }
 
+/* Hero glow */
 .hero-glow {
     position: absolute;
     width: 600px;
     height: 600px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%);
     pointer-events: none;
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-8px); }
-}
-
-.section-icon {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
+/* Journal */
 .journal-textarea {
     background: transparent;
     border: none;
@@ -67,57 +63,72 @@
     resize: none;
     width: 100%;
     min-height: 200px;
-    font-family: 'Manrope', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1rem;
     line-height: 1.8;
     color: #ededed;
 }
-
 .journal-textarea::placeholder {
     color: rgba(255, 255, 255, 0.2);
 }
 
+/* Navigation */
 .nav-link {
     position: relative;
     color: rgba(255, 255, 255, 0.5);
 }
-
 .nav-link:hover {
     color: rgba(255, 255, 255, 0.9);
 }
-
 .nav-link.active {
-    color: #fff;
+    color: #2563EB;
 }
-
 .nav-link.active::after {
     content: '';
     position: absolute;
     bottom: -4px;
     left: 0;
     right: 0;
-    height: 1px;
-    background: #fff;
+    height: 2px;
+    background: #2563EB;
+    border-radius: 1px;
 }
 
 /* React Flow custom styles */
 .react-flow__background {
     background-color: #050505 !important;
 }
-.react-flow__edge-path {
-    stroke: #333 !important;
-    stroke-width: 1 !important;
-}
 .react-flow__controls {
-    background: #121212 !important;
+    background: #0F0F0F !important;
     border: 1px solid rgba(255,255,255,0.1) !important;
     border-radius: 12px !important;
 }
 .react-flow__controls-button {
-    background: #121212 !important;
+    background: #0F0F0F !important;
     border-bottom: 1px solid rgba(255,255,255,0.05) !important;
     fill: #aaa !important;
 }
 .react-flow__controls-button:hover {
     background: #1a1a1a !important;
+}
+
+/* Blue badge */
+.blue-badge {
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: #2563EB;
+    background: rgba(37, 99, 235, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+}
+
+/* Grain overlay */
+.grain-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
