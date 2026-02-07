@@ -125,6 +125,7 @@ export default function DomainPage() {
                         >
                         {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                       </button>
+                      </div>
                     </div>
 
                     {isExpanded && (
