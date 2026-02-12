@@ -5,7 +5,7 @@ import { ArrowRight, Brain, Target, Lightbulb, Compass, BookOpen, Cpu, CheckCirc
 import axios from "axios";
 
 // Χρησιμοποιούμε process.env και το πρόθεμα REACT_APP_ για Create React App
-const API = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000/api";
+const rawAPI = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000/api";
 const API = rawAPI.endsWith('/') ? rawAPI.slice(0, -1) : rawAPI;
 
 
