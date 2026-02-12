@@ -6,7 +6,8 @@ import axios from "axios";
 import CopyablePrompt from "@/components/CopyablePrompt";
 import { useProgress } from "@/context/ProgressContext";
 
-const API = "http://127.0.0.1:8000/api";
+const baseAPI = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+const API = baseAPI.endsWith('/') ? baseAPI.slice(0, -1) : baseAPI;
 
 export default function DomainPage() {
   const { slug } = useParams();
