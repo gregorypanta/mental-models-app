@@ -10,7 +10,8 @@ import "reactflow/dist/style.css";
 import { Brain, Zap, Lightbulb, Target, BookOpen, Cpu } from "lucide-react";
 import axios from "axios";
 
-const baseAPI = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+// Χρησιμοποιούμε process.env και το πρόθεμα REACT_APP_ για Create React App
+const API = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000/api";
 const API = baseAPI.endsWith('/') ? baseAPI.slice(0, -1) : baseAPI;
 
 const CustomNode = ({ data }) => {
