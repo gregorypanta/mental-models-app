@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Trophy, Check, Flame, ArrowRight, RotateCcw, Sparkles } from "lucide-react";
 import axios from "axios";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const API = "http://127.0.0.1:8000/api";
 
 export default function ChallengePage() {
   const [challenge, setChallenge] = useState(null);

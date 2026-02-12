@@ -1,26 +1,41 @@
 from fastapi import FastAPI, APIRouter, Query, HTTPException
 from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware  # Χρησιμοποίησε αυτό το import
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
-import random
+import uuid
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
-import uuid
 from datetime import datetime, timezone
 from seed_data import SECTIONS, MODELS, INTRODUCTION, CONCLUSION
 
+# 1. Φόρτωση ρυθμίσεων
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
-
+# 2. Αρχικοποίηση Εφαρμογής (ΜΟΝΟ ΜΙΑ ΦΟΡΑ)
 app = FastAPI()
+
+# 3. Ρύθμιση CORS (ΜΟΝΟ ΜΙΑ ΦΟΡΑ)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# 4. Σύνδεση με τη Βάση
+mongo_url = os.environ.get('MONGO_URL', 'mongodb://127.0.0.1:27017')
+client = AsyncIOMotorClient(mongo_url)
+db = client[os.environ.get('DB_NAME', 'ai_powered_mind')]
+
+# 5. Router
 api_router = APIRouter(prefix="/api")
+
+# ΣΥΝΕΧΙΖΕΙΣ ΜΕ ΤΑ PYDANTIC MODELS ΣΟΥ...
 
 
 # Pydantic models

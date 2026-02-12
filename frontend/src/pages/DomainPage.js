@@ -6,7 +6,7 @@ import axios from "axios";
 import CopyablePrompt from "@/components/CopyablePrompt";
 import { useProgress } from "@/context/ProgressContext";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const API = "http://127.0.0.1:8000/api";
 
 export default function DomainPage() {
   const { slug } = useParams();

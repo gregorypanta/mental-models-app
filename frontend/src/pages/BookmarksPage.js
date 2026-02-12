@@ -5,7 +5,8 @@ import { Bookmark, ArrowRight } from "lucide-react";
 import { useProgress } from "@/context/ProgressContext";
 import axios from "axios";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const API = "http://127.0.0.1:8000/api";
+
 
 export default function BookmarksPage() {
   const { bookmarks, toggleBookmark } = useProgress();

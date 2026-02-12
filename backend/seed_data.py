@@ -310,3 +310,36 @@ CONCLUSION = {
     "challenge": "Pick 5 mental models from different sections. Apply them daily using the AI-powered prompts. Reflect and journal results. After 30 days, review progress: you will think faster, learn deeper, and act smarter.",
     "final_thought": "The mind is like a toolset -- the more versatile your tools, the more problems you can solve. Combining timeless mental models with AI-powered insights gives you the ultimate edge to think smarter, learn faster, and create more value in your life and work."
 }
+import asyncio
+from motor.motor_asyncio import AsyncIOMotorClient
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+async def seed_everything():
+    # Σύνδεση στη βάση
+    mongo_url = os.getenv("MONGO_URL", "mongodb://localhost:27017")
+    db_name = os.getenv("DB_NAME", "ai_powered_mind")
+    
+    client = AsyncIOMotorClient(mongo_url)
+    db = client[db_name]
+    
+    print(f"Connecting to MongoDB at {mongo_url}...")
+    
+    # Γέμισμα Sections
+    await db.sections.delete_many({})
+    await db.sections.insert_many(SECTIONS)
+    print(f"✅ Seeded {len(SECTIONS)} sections.")
+    
+    # Γέμισμα Models
+    await db.models.delete_many({})
+    await db.models.insert_many(MODELS)
+    print(f"✅ Seeded {len(MODELS)} mental models.")
+    
+    client.close()
+    print("\n🎉 ALL DONE! Refresh your website now.")
+
+if __name__ == "__main__":
+    asyncio.run(seed_everything())
+    

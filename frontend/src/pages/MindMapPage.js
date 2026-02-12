@@ -10,7 +10,7 @@ import "reactflow/dist/style.css";
 import { Brain, Zap, Lightbulb, Target, BookOpen, Cpu } from "lucide-react";
 import axios from "axios";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const API = "http://127.0.0.1:8000/api";
 
 const CustomNode = ({ data }) => {
   const isCenter = data.isCenter;

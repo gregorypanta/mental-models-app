@@ -5,7 +5,11 @@ import { Brain, Target, Lightbulb, Compass, BookOpen, Cpu, ArrowRight } from "lu
 import { useProgress } from "@/context/ProgressContext";
 import axios from "axios";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+ // Διαγράφεις αυτή τη γραμμή:
+// const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
+// Βάζεις αυτή τη γραμμή (hardcoded για να τελειώνουμε με τα 404):
+const API = "http://127.0.0.1:8000/api";
 
 const sectionIcons = {
   brain: Brain,
