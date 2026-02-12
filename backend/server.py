@@ -18,6 +18,13 @@ load_dotenv(ROOT_DIR / '.env')
 # 2. Αρχικοποίηση Εφαρμογής (ΜΟΝΟ ΜΙΑ ΦΟΡΑ)
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Επιτρέπει σε όλα τα sites (όπως το Vercel) να μιλάνε με το API σου
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # 4. Σύνδεση με τη Βάση
 # Πρώτα κοιτάμε αν υπάρχει η μεταβλητή MONGO_URL (όπως την ονομάσαμε στο Render)
 mongo_url = os.environ.get('MONGO_URL') or os.environ.get('MONGO_URI') or 'mongodb://127.0.0.1:27017'
@@ -383,13 +390,8 @@ async def get_stats():
 app.include_router(api_router)
 # Στο τέλος του αρχείου, πριν το logging
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Επιτρέπει σε όλα τα sites (όπως το Vercel) να μιλάνε με το API σου
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
+
 
 logging.basicConfig(
     level=logging.INFO,
