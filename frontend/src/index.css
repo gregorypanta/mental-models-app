@@ -111,8 +111,15 @@
   display: none !important;
 }
 
-/* Αν εμφανίζεται ως footer badge από template */
-.emergent-badge, [class*="vercel-badge"] {
-  display: none !important;
-  visibility: hidden !important;
+/* Αυτό θα "πιάσει" το κουμπί ακόμα κι αν προσπαθεί να εμφανιστεί */
+div[class*="emergent"], 
+button[class*="emergent"], 
+a[href*="emergent"], 
+#emergent-badge-container,
+.emergent-badge {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -9999 !important;
 }
