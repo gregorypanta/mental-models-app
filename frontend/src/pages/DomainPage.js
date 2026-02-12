@@ -8,7 +8,7 @@ import { useProgress } from "@/context/ProgressContext";
 
 // Χρησιμοποιούμε process.env και το πρόθεμα REACT_APP_ για Create React App
 const API = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000/api";
-const API = baseAPI.endsWith('/') ? baseAPI.slice(0, -1) : baseAPI;
+const API = rawAPI.endsWith('/') ? rawAPI.slice(0, -1) : rawAPI;
 
 export default function DomainPage() {
   const { slug } = useParams();
