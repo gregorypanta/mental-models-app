@@ -18,19 +18,14 @@ load_dotenv(ROOT_DIR / '.env')
 # 2. Αρχικοποίηση Εφαρμογής (ΜΟΝΟ ΜΙΑ ΦΟΡΑ)
 app = FastAPI()
 
-# 3. Ρύθμιση CORS (ΜΟΝΟ ΜΙΑ ΦΟΡΑ)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"], 
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 # 4. Σύνδεση με τη Βάση
-mongo_url = os.environ.get('MONGO_URL', 'mongodb://127.0.0.1:27017')
+# Πρώτα κοιτάμε αν υπάρχει η μεταβλητή MONGO_URL (όπως την ονομάσαμε στο Render)
+mongo_url = os.environ.get('MONGO_URL') or os.environ.get('MONGO_URI') or 'mongodb://127.0.0.1:27017'
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ.get('DB_NAME', 'ai_powered_mind')]
+
+# Παίρνουμε το όνομα της βάσης από το Render, αλλιώς χρησιμοποιούμε το 'ai_powered_mind'
+db_name = os.environ.get('DB_NAME', 'ai_powered_mind')
+db = client[db_name]
 
 # 5. Router
 api_router = APIRouter(prefix="/api")
@@ -386,11 +381,12 @@ async def get_stats():
 
 
 app.include_router(api_router)
+# Στο τέλος του αρχείου, πριν το logging
 
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=["*"],  # Επιτρέπει σε όλα τα sites (όπως το Vercel) να μιλάνε με το API σου
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
     allow_methods=["*"],
     allow_headers=["*"],
 )
