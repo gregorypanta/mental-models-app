@@ -9,7 +9,8 @@ import axios from "axios";
 // const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 // Βάζεις αυτή τη γραμμή (hardcoded για να τελειώνουμε με τα 404):
-const baseAPI = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+ // Χρησιμοποιούμε process.env και το πρόθεμα REACT_APP_ για Create React App
+const API = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000/api";
 const API = baseAPI.endsWith('/') ? baseAPI.slice(0, -1) : baseAPI;
 
 const sectionIcons = {
