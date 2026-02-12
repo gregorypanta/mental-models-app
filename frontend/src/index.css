@@ -106,3 +106,13 @@
     transform: translateY(-2px);
     box-shadow: 0 0 30px -10px rgba(37, 99, 235, 0.15);
 }
+/* Κρύβει το Vercel/Emergent badge αν εμφανίζεται ως toolbar */
+#vercel-toolbar-container {
+  display: none !important;
+}
+
+/* Αν εμφανίζεται ως footer badge από template */
+.emergent-badge, [class*="vercel-badge"] {
+  display: none !important;
+  visibility: hidden !important;
+}
